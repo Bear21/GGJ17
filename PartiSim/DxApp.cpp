@@ -472,6 +472,13 @@ int DxApp::SetupDx11Resources()
 	data = tempbuffer;
 	
 	hr = m_dx11Res.m_pd3dDevice->CreatePixelShader( data, length, NULL, &m_dx11Res.m_pResetShader );
+
+   fopen_s(&FP, "startupreset.cso", "rb");
+   length = fread(tempbuffer, 1, maxShaderSize, FP);
+   fclose(FP);
+   data = tempbuffer;
+
+   hr = m_dx11Res.m_pd3dDevice->CreatePixelShader(data, length, NULL, &m_dx11Res.m_pStartupResetShader);
 	
 	fopen_s(&FP, "halt.cso", "rb");
 	length = fread(tempbuffer, 1, maxShaderSize, FP);

@@ -109,6 +109,7 @@ private:
       ID3D11ComputeShader*       m_pCSSimShader;
       ID3D11ComputeShader*       m_pCSSortShader[2];
       ID3D11PixelShader*         m_pResetShader;
+      ID3D11PixelShader*         m_pStartupResetShader;
       ID3D11PixelShader*         m_pHaltShader;
       ID3D11PixelShader*         m_pImplodeShader;
       ID3D11PixelShader*         m_pExplodeShader;
