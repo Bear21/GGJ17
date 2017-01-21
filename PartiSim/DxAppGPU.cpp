@@ -59,6 +59,17 @@ void DxApp::Render()
 		m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
 	}
 
+   { // Sandpit
+      m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
+      m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
+      m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pSandpit, NULL, 0);
+      m_dx11Res.m_pImmediateContext->Draw(4, 0);
+      m_flip = !m_flip;
+      srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
+      m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
+      m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+   }
+
 	for(int i=0; i<input.numControl; i++) // modifiers
 	{
 		if((input.controlInput[i].inputLow & 1<<3) == 1<<3) // Reset

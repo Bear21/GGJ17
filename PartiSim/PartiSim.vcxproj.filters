@@ -82,5 +82,11 @@
     <FxCompile Include="explode.hlsl">
       <Filter>shader</Filter>
     </FxCompile>
+    <FxCompile Include="sandpit.hlsl">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="startupreset.hlsl">
+      <Filter>shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -9,13 +9,11 @@
 // <email>bear@8bitbear.com</email>
 // <date>2017-01-21</date>
 #include "shader.fx"
-cbuffer CBEXPLODE : register(b3)
+cbuffer SimInput : register(b2)
 {
-   float2 detPoint;
-   float explodeRangeSetting;
-}
-
-float4 explode(PS_INPUT_TEX input) : SV_Target
+   float timeP;
+};
+float4 sandpit(PS_INPUT_TEX input) : SV_Target
 {
 
 	float4 ref = tx2Data.Sample(samLinear, input.Tex);//locs[idx[0]][idx[1]];
@@ -23,21 +21,18 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
 	float2 vel = ref.xy;
 	float4 output;
 
-	float2 relvec = detPoint - loc;
-	float dist = sqrt(relvec.x*relvec.x + relvec.y*relvec.y);//get distance for normalisation
-   float rangeSetting = 50; //explodeRangeSetting;
-	float forceSetting = 10;
-   float rangeFalloffSetting = 150;
-
-	if (dist > rangeFalloffSetting)
+	if (loc.x > 200 || loc.x < 100)
 	{
 		return ref;
 	}
 
-   float multiplier = clamp((rangeFalloffSetting - dist) / (rangeFalloffSetting - rangeSetting), 0, 1);
-   float force = forceSetting * (multiplier * multiplier);
-
-	vel = -relvec * force;
-
+   if (vel.x > 0)
+   {
+      vel.x = -vel.x;
+   }
+   else
+   {
+      vel -= vel*3.5*timeP;
+   }
 	return float4(float2(vel), float2(loc));
 }
