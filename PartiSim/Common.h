@@ -25,4 +25,11 @@ struct SimInput
 	int reserved1, reserved2;
 	SimControl controlInput[16];
 };
+
+struct ExplosionDelayedData
+{
+	float mousePosX;
+	float mousePosY;
+	float timePDeadline;
+};
 #pragma pack(pop)

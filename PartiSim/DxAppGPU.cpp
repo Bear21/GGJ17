@@ -83,6 +83,7 @@ void DxApp::Render()
 			srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+			ExplosionDelayedData
 		}
 	}
 	
