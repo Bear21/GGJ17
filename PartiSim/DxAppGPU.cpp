@@ -98,6 +98,11 @@ void DxApp::Render()
 		}
       if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
       {
+         ExplosionDelayedData foo = ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0);
+         
+         m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
+
+
          m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
          m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
          m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pExplodeShader, NULL, 0);
@@ -242,9 +247,9 @@ int DxApp::SetupSizeDependentResources11()
 	SimDetailsCB CB = {0, 0, (float)m_oWidth, (float)m_oHeight, m_scale, m_settings.width, m_settings.height};
 	m_dx11Res.m_pImmediateContext->UpdateSubresource( m_dx11Res.m_pSimInfoCB, 0, NULL, &CB, 0, 0 );
 
-	ID3D11Buffer *CBList[] = {m_dx11Res.m_pConstantBuffer, m_dx11Res.m_pSimInfoCB, m_dx11Res.m_pSimInput};
-	m_dx11Res.m_pImmediateContext->PSSetConstantBuffers(0, 3, CBList);
-	m_dx11Res.m_pImmediateContext->CSSetConstantBuffers(0, 3, CBList);
+	ID3D11Buffer *CBList[] = {m_dx11Res.m_pConstantBuffer, m_dx11Res.m_pSimInfoCB, m_dx11Res.m_pSimInput, m_dx11Res.m_pExplosiveCB };
+	m_dx11Res.m_pImmediateContext->PSSetConstantBuffers(0, 4, CBList);
+	m_dx11Res.m_pImmediateContext->CSSetConstantBuffers(0, 4, CBList);
 
 	return 0;
 }
@@ -348,8 +353,8 @@ void DxApp::ResizeSizeDependentResources11(int width, int height)
 				SimDetailsCB CB = {0, 0, (float)m_oWidth, (float)m_oHeight, m_scale, m_settings.width, m_settings.height};
 				m_dx11Res.m_pImmediateContext->UpdateSubresource( m_dx11Res.m_pSimInfoCB, 0, NULL, &CB, 0, 0 );
 
-				ID3D11Buffer *CBList[] = { m_dx11Res.m_pConstantBuffer, m_dx11Res.m_pSimInfoCB, m_dx11Res.m_pSimInput, m_dx11Res.m_pSortInfoCB };
-				m_dx11Res.m_pImmediateContext->PSSetConstantBuffers(0, 3, CBList);
+				ID3D11Buffer *CBList[] = { m_dx11Res.m_pConstantBuffer, m_dx11Res.m_pSimInfoCB, m_dx11Res.m_pSimInput, m_dx11Res.m_pExplosiveCB };
+				m_dx11Res.m_pImmediateContext->PSSetConstantBuffers(0, 4, CBList);
 				m_dx11Res.m_pImmediateContext->CSSetConstantBuffers(0, 4, CBList);
 			}
 		}

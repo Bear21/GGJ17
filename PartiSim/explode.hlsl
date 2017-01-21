@@ -37,7 +37,7 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
    float multiplier = clamp((rangeFalloffSetting - dist) / (rangeFalloffSetting - rangeSetting), 0, 1);
    float force = forceSetting * (multiplier * multiplier);
 
-	vel = -relvec * force;
+	vel = vel + -relvec * force;
 
 	return float4(float2(vel), float2(loc));
 }
