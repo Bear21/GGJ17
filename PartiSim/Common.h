@@ -28,6 +28,10 @@ struct SimInput
 
 struct ExplosionDelayedData
 {
+   ExplosionDelayedData(float x, float y, float time) :
+      mousePosX(x), mousePosY(y), timePDeadline(time)
+   {
+   }
 	float mousePosX;
 	float mousePosY;
 	float timePDeadline;

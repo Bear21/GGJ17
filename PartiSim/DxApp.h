@@ -17,6 +17,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "timecounter.h"
+#include <list>
 
 
 using namespace Microsoft::WRL;
@@ -166,8 +167,12 @@ private:
    float                m_scale;
    int                  m_noRedraw;
    TimePast             m_holdTime;
-   int                  m_simReset, m_simHalt;
+   int                  m_simReset, m_simHalt, m_simImplode;
    int                  m_first;
+
+   std::list<ExplosionDelayedData>  m_explosionDataList;
+   __int64                          m_frameCounter;
+
 public:
 	DxApp(void);
 	~DxApp(void);
@@ -199,6 +204,7 @@ private:
 
 	void SimReset();
 	void SimZeroVelocity();
+   void SimImplode();
 
 	void DisplayBenchmarkComplete();
 

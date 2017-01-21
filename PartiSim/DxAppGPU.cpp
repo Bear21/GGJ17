@@ -29,6 +29,7 @@ void DxApp::Render()
 #endif
 	SimInput input;
 	input.numControl = 0;
+   m_frameCounter++;
 
 	if(!GetInput(input))
 		return;
@@ -83,9 +84,39 @@ void DxApp::Render()
 			srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
-			ExplosionDelayedData
 		}
+      if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
+      {
+         m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
+         m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
+         m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pExplodeShader, NULL, 0);
+         m_dx11Res.m_pImmediateContext->Draw(4, 0);
+         m_flip = !m_flip;
+         srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
+         m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
+         m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+         //m_explosionDataList.push_front(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0/* input.timeP * (m_frameCounter + 2850)*/));
+      }
 	}
+
+   /*if (!m_explosionDataList.empty())
+   {
+      
+      for (auto it = m_explosionDataList.begin; it != m_explosionDataList.end(); ++it)
+      {
+         if ((m_explosionDataList.size() > 0) && m_explosionDataList.front().timePDeadline < (input.timeP * m_frameCounter))
+         m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
+         m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
+         m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pExplodeShader, NULL, 0);
+         m_dx11Res.m_pImmediateContext->Draw(4, 0);
+         m_flip = !m_flip;
+         srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
+         m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
+         m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+    
+         m_explosionDataList.remove(*it);
+      }
+   }*/
 	
 	if(m_settings.renderMode==0)
 	{
@@ -332,4 +363,9 @@ void DxApp::SimReset()
 void DxApp::SimZeroVelocity()
 {
 	m_simHalt=1;
+}
+
+void DxApp::SimImplode()
+{
+   m_simImplode = 1;
 }

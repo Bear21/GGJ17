@@ -9,6 +9,11 @@
 // <email>bear@8bitbear.com</email>
 // <date>2017-01-21</date>
 #include "shader.fx"
+cbuffer CBEXPLODE : register(b2)
+{
+   float explodeRangeSetting;
+}
+
 float4 explode(PS_INPUT_TEX input) : SV_Target
 {
 
@@ -21,18 +26,19 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
 
 	float2 relvec = detPoint - loc;
 	float dist = sqrt(relvec.x*relvec.x + relvec.y*relvec.y);//get distance for normalisation
-	float rangeSetting = 150;
-	float forceSetting = 1;
+   float rangeSetting = 50; //explodeRangeSetting;
+	float forceSetting = 10;
+   float rangeFalloffSetting = 150;
 
-	if (dist > rangeSetting)
+	if (dist > rangeFalloffSetting)
 	{
 		return ref;
 	}
 
-	float rangeReal = 3.1415926535897932384626433832795 / rangeSetting;
-	float rangeReady = dist * rangeReal;
-	float force = sin(rangeReady) * forceSetting;
-	vel += relvec*(force*force);
+   float multiplier = clamp((rangeFalloffSetting - dist) / (rangeFalloffSetting - rangeSetting), 0, 1);
+   float force = forceSetting * (multiplier * multiplier);
+
+	vel = -relvec * force;
 
 	return float4(float2(vel), float2(loc));
 }
