@@ -508,6 +508,13 @@ int DxApp::SetupDx11Resources()
 
    hr = m_dx11Res.m_pd3dDevice->CreatePixelShader(data, length, NULL, &m_dx11Res.m_pExplodeShader);
 
+   fopen_s(&FP, "sandpit.cso", "rb");
+   length = fread(tempbuffer, 1, maxShaderSize, FP);
+   fclose(FP);
+   data = tempbuffer;
+
+   hr = m_dx11Res.m_pd3dDevice->CreatePixelShader(data, length, NULL, &m_dx11Res.m_pSandpit);
+
 	/*fopen_s(&FP, "CSsortH.cso", "rb");
 	length = fread(tempbuffer, 1, maxShaderSize, FP);
 	fclose(FP);

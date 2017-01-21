@@ -51,6 +51,7 @@ PS_INPUT_TEX VS( uint vID : SV_VertexID )
 	return output;
 }
 
+//box is 1280x800
 
 float4 PS(PS_INPUT_TEX input) : SV_Target // Sets Output Colour
 {
