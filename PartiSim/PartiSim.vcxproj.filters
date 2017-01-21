@@ -76,5 +76,11 @@
     <FxCompile Include="CSsortH.hlsl">
       <Filter>shader</Filter>
     </FxCompile>
+    <FxCompile Include="implode.hlsl">
+      <Filter>shader</Filter>
+    </FxCompile>
+    <FxCompile Include="explode.hlsl">
+      <Filter>shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

@@ -52,7 +52,7 @@ PS_INPUT_TEX VS( uint vID : SV_VertexID )
 }
 
 
-float4 PS(PS_INPUT_TEX input) : SV_Target
+float4 PS(PS_INPUT_TEX input) : SV_Target // Sets Output Colour
 {
 	int px = trunc(input.Pos.x);
 	int py = trunc(input.Pos.y);

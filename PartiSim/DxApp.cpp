@@ -494,6 +494,19 @@ int DxApp::SetupDx11Resources()
 
 	hr = m_dx11Res.m_pd3dDevice->CreateComputeShader(data, length, NULL, &m_dx11Res.m_pCSSortShader[0]);
 
+   fopen_s(&FP, "implode.cso", "rb");
+   length = fread(tempbuffer, 1, maxShaderSize, FP);
+   fclose(FP);
+   data = tempbuffer;
+
+   hr = m_dx11Res.m_pd3dDevice->CreatePixelShader(data, length, NULL, &m_dx11Res.m_pImplodeShader);
+
+   fopen_s(&FP, "explode.cso", "rb");
+   length = fread(tempbuffer, 1, maxShaderSize, FP);
+   fclose(FP);
+   data = tempbuffer;
+
+   hr = m_dx11Res.m_pd3dDevice->CreatePixelShader(data, length, NULL, &m_dx11Res.m_pExplodeShader);
 
 	/*fopen_s(&FP, "CSsortH.cso", "rb");
 	length = fread(tempbuffer, 1, maxShaderSize, FP);
