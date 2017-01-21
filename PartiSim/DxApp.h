@@ -17,7 +17,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "timecounter.h"
-#include <list>
+#include <queue>
 
 
 using namespace Microsoft::WRL;
@@ -45,6 +45,7 @@ struct DxAppSetupDesc
 	int            timeMode;
 	wchar_t        *inFileName, *outFileName;
 	wchar_t        *hostName;
+   bool draw;
 };
 
 
@@ -72,6 +73,8 @@ struct Settings
 	FILE* outFile;
 
 	int profile;
+
+	bool drawMode;
 };
 
 class DxApp
@@ -116,6 +119,7 @@ private:
       ID3D11Buffer*              m_pSimInfoCB;
       ID3D11Buffer*              m_pSortInfoCB;
       ID3D11Buffer*              m_pSimInput;
+      ID3D11Buffer*              m_pExplosiveCB;
 
       // Resource Views
       ID3D11Buffer               *m_pTextureBuffer;
@@ -170,8 +174,10 @@ private:
    int                  m_simReset, m_simHalt, m_simImplode;
    int                  m_first;
 
-   std::list<ExplosionDelayedData>  m_explosionDataList;
+   std::queue<ExplosionDelayedData>  m_explosionDataQueue;
    __int64                          m_frameCounter;
+
+
 
 public:
 	DxApp(void);

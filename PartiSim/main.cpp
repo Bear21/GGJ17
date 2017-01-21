@@ -31,6 +31,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	wchar_t *param =0;
 	int timeSample=0;
 	RenderMode renderMode=Render_DX11Pixel;
+   bool draw = false;
 
 	if(param=wcsstr(lpCmdLine, L"+r "))
 	{
@@ -76,8 +77,13 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	{
 		renderMode=Render_DX11Compute;
 	}
+
+   if (param = wcsstr(lpCmdLine, L"+draw"))
+   {
+      draw = true;
+   }
 	
-	DxAppSetupDesc daDesc = {hInstance, L"PartiSim", L"PartiSim", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 1280, 800, nCmdShow, renderMode, startvalue, timeSample, readFile, writeFile, hostName};
+	DxAppSetupDesc daDesc = {hInstance, L"PartiSim", L"PartiSim", WS_OVERLAPPEDWINDOW | WS_VISIBLE, 1280, 800, nCmdShow, renderMode, startvalue, timeSample, readFile, writeFile, hostName, draw};
 	if(Record((DxAppErrors)app->Init(&daDesc)) != 0)
 	{
 		Dump("errorlog.txt");

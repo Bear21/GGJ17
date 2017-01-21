@@ -10,9 +10,6 @@
 // <date>2014-01-15</date>
 #include "DxApp.h"
 
-
-
-
 DxApp::DxApp(void)
 	: m_close(false), m_mouse1(false), m_mouse2(false), m_timer(),
 	m_performanceS(), m_performanceD(), m_performanceR(),
@@ -74,6 +71,7 @@ int DxApp::Init(DxAppSetupDesc *in_desc)
 	m_settings.timeMode = in_desc->timeMode;
 	m_settings.renderMode = in_desc->renderMode;
    m_settings.dx12 = (m_settings.renderMode > Render_DX11Compute);
+   m_settings.drawMode = in_desc->draw;
 
 	if((m_settings.inputType & 36) != 0 )
 	{
@@ -541,6 +539,9 @@ int DxApp::SetupDx11Resources()
 	m_dx11Res.m_pd3dDevice->CreateBuffer(&bd, NULL, &m_dx11Res.m_pSimInfoCB);
 	bd.ByteWidth = 32;/// sizeof(SortDetailsCB);
 	m_dx11Res.m_pd3dDevice->CreateBuffer(&bd, NULL, &m_dx11Res.m_pSortInfoCB);
+   bd.ByteWidth = sizeof(ExplosionDelayedData);/// sizeof(ExplosionDelayedData);
+   m_dx11Res.m_pd3dDevice->CreateBuffer(&bd, NULL, &m_dx11Res.m_pExplosiveCB);
+   
 
 	
 	D3D11_TEXTURE2D_DESC descT;
@@ -683,13 +684,15 @@ bool DxApp::GetInput(SimInput &input)
 		input.controlInput[input.numControl].inputLow += m_mouse2<<1;
 		input.controlInput[input.numControl].inputLow += m_simReset<<3;
 		input.controlInput[input.numControl].inputLow += m_simHalt<<4;
-      input.controlInput[input.numControl].inputLow += m_simImplode << 5;
+      input.controlInput[input.numControl].inputLow += m_mouse2 << 5;//m_simImplode << 5;
 		input.controlInput[input.numControl].mousePosX = m_mousePositionX/m_scale;
 		input.controlInput[input.numControl].mousePosY = m_mousePositionY/m_scale;
 
 		m_simReset=0;
 		m_simHalt=0;
-      m_simImplode = 0;
+		m_simImplode = 0;
+		//m_settings.
+      m_mouse2 = false;
 
 		input.numControl++;
 	}

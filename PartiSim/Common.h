@@ -8,7 +8,10 @@
 // <author>Stephen Wheeler</author>
 // <email>bear@8bitbear.com</email>
 // <date>2014-01-15</date>
+
 #pragma once
+#include <d3d11.h>
+#include <DirectXMath.h>
 #pragma pack(push, 1) // ensure no padding
 __declspec(align(4)) struct SimControl
 {
@@ -29,11 +32,10 @@ struct SimInput
 struct ExplosionDelayedData
 {
    ExplosionDelayedData(float x, float y, float time) :
-      mousePosX(x), mousePosY(y), timePDeadline(time)
+      detPoint(x, y), timePDeadline(time)
    {
    }
-	float mousePosX;
-	float mousePosY;
+   DirectX::XMFLOAT2 detPoint;
 	float timePDeadline;
 };
 #pragma pack(pop)
