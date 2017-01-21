@@ -95,6 +95,7 @@ half4 sim(PS_INPUT_TEX input) : SV_Target
 	addr*=4;
 	tx2Buffer.InterlockedAdd(addr, 100, result);*/
 
+   float velmod = 1+(clamp(length(vel) - 5, 0, 9999) / 8);
 
 	//antialiasing.
 	float2 aa = (loc*tscale) % 1;
@@ -103,17 +104,17 @@ half4 sim(PS_INPUT_TEX input) : SV_Target
 	addr*=4;
 	float share = (1-aa.x)*(1-aa.y);
 	//float share = aa.x*10;
-	tx2Buffer.InterlockedAdd(addr, share*100*tscale, result);
+	tx2Buffer.InterlockedAdd(addr, share*100*tscale * velmod, result);
 	addr += 4;
 	share = (aa.x)*(1-aa.y);
-	tx2Buffer.InterlockedAdd(addr, share*100*tscale, result);
+	tx2Buffer.InterlockedAdd(addr, share*100*tscale * velmod, result);
 	addr -=4;
 	addr+=dimensions.x*4;
 	share = (1-aa.x)*(aa.y);
-	tx2Buffer.InterlockedAdd(addr, share*100*tscale, result);
+	tx2Buffer.InterlockedAdd(addr, share*100*tscale * velmod, result);
 	addr += 4;
 	share = (aa.x)*(aa.y);
-	tx2Buffer.InterlockedAdd(addr, share*100*tscale, result);
+	tx2Buffer.InterlockedAdd(addr, share*100*tscale * velmod, result);
 
 	return output;
 }
