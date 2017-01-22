@@ -34,7 +34,7 @@ cbuffer PSCB : register( b0 )
 	int height;
 }
 
-cbuffer CBPLACING : register(b4)
+cbuffer CBPLACING : register(b3)
 {
    float2 placePoint[6];
 }
@@ -65,7 +65,7 @@ float4 PS(PS_INPUT_TEX input) : SV_Target // Sets Output Colour
 
    for (int i = 0; i < 6; i++)
    {
-      float dist = distance(input.Pos, placePoint[i]);
+      float dist = distance(input.Tex.xy * float2(1280, 800), placePoint[i]);
       if (dist < 5) return float4(1, 0, 0, 1);
    }
 

@@ -32,7 +32,7 @@ float4 sandpit(PS_INPUT_TEX input) : SV_Target
    }
    else
    {
-      vel -= vel*10*timeP;
+      vel -= vel*9.5*timeP;
    }
 	return float4(float2(vel), float2(loc));
 }

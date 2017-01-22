@@ -556,7 +556,7 @@ int DxApp::SetupDx11Resources()
 	m_dx11Res.m_pd3dDevice->CreateBuffer(&bd, NULL, &m_dx11Res.m_pSimInfoCB);
 	bd.ByteWidth = 32;/// sizeof(SortDetailsCB);
 	m_dx11Res.m_pd3dDevice->CreateBuffer(&bd, NULL, &m_dx11Res.m_pSortInfoCB);
-   bd.ByteWidth = 32;//  sizeof(ExplosionDelayedData);/// sizeof(ExplosionDelayedData);
+   bd.ByteWidth = 128;//  sizeof(ExplosionDelayedData);/// sizeof(ExplosionDelayedData);
    m_dx11Res.m_pd3dDevice->CreateBuffer(&bd, NULL, &m_dx11Res.m_pExplosiveCB);
    
 

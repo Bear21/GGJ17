@@ -174,13 +174,17 @@ void DxApp::Render()
 	}
 
 	
+   XMFLOAT4 placePoints[6];
    for (int i = 0; i < MAX_EXPLOSIONS; i++)
    {
       ExplosionDelayedData& foo = m_explosionDataQueue[i];
-      if (foo.timePDeadline >= 0)
+      placePoints[i] = XMFLOAT4(5000, 5000, 100, 100);
+      if (foo.timePDeadline <= 0)
          continue;
-
+      placePoints[i] = XMFLOAT4(foo.detPoint.x, foo.detPoint.y, 100, 100);
    }
+   m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &placePoints, 0, 0);
+
 	m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pRenderFinalTargetView, dsNullview);
 	ID3D11ShaderResourceView *resources[] = {m_dx11Res.m_pTextureView, NULL, NULL};
 	m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 3, resources);
