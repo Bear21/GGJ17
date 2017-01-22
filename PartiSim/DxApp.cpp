@@ -698,12 +698,13 @@ bool DxApp::GetInput(SimInput &input)
 		fread(&input.controlInput[0], sizeof(SimControl), input.numControl, m_settings.inFile);
 	}
 
-	if((m_settings.inputType & 1) == 1 && ((m_mouse1 || m_mouse2) || (m_simReset || m_simHalt)) || m_simImplode)
+	if((m_settings.inputType & 1) == 1 && ((m_mouse1 || m_mouse2) || (m_simReset || m_simHalt)) || m_simImplode || m_simStart)
 	{
 		input.controlInput[input.numControl].inputLow = m_mouse1<< InputMessages_pull;
 		//input.controlInput[input.numControl].inputLow += m_mouse2<<1;
 		input.controlInput[input.numControl].inputLow += m_simReset<< InputMessages_reset;
 		input.controlInput[input.numControl].inputLow += m_simHalt<< InputMessages_halt;
+		input.controlInput[input.numControl].inputLow += m_simStart << InputMessages_start;
       if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
          input.controlInput[input.numControl].inputLow += m_mouse2 << InputMessages_explode;//m_simImplode << 5;
          input.controlInput[input.numControl].inputHigh = m_localBombCounter * 200.f;
@@ -713,6 +714,7 @@ bool DxApp::GetInput(SimInput &input)
 
 		m_simReset=0;
 		m_simHalt=0;
+		m_simStart = 0;
 		m_simImplode = 0;
 		//m_settings.
       m_mouse2 = false;

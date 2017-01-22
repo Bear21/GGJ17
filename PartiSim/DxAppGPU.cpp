@@ -90,19 +90,7 @@ void DxApp::Render()
 		}
 		if((input.controlInput[i].inputLow & 1<<4) == 1<<4) // Halt (sets velocity to 0)
 		{
-         if (m_live == 0)
-         {
-            m_live = 1;
-            m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
-            m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
-            m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pResetShader, NULL, 0);
-            m_dx11Res.m_pImmediateContext->Draw(4, 0);
-            m_flip = !m_flip;
-            srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
-            m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
-            m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
-            break;//no point in running any more
-         }
+
 
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
@@ -112,6 +100,20 @@ void DxApp::Render()
 			srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+		}
+		
+		if (m_live == 0 && ((input.controlInput[i].inputLow & (1 << InputMessages_start)) == (1 << InputMessages_start)))
+		{
+			m_live = 1;
+			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
+			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
+			m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pResetShader, NULL, 0);
+			m_dx11Res.m_pImmediateContext->Draw(4, 0);
+			m_flip = !m_flip;
+			srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
+			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
+			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+			break;//no point in running any more
 		}
       if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
       {

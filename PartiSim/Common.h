@@ -22,6 +22,7 @@ enum InputMessages
 	InputMessages_reset,
 	InputMessages_halt,
 	InputMessages_explode,
+	InputMessages_start,
 };
 #pragma pack(push, 1) // ensure no padding
 __declspec(align(4)) struct SimControl
