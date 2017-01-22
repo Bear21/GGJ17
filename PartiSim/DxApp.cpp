@@ -17,7 +17,7 @@ DxApp::DxApp(void)
    m_performanceS(), m_performanceD(), m_performanceR(),
    m_counterExpectedTime(0.f), m_flip(0),
    m_simReset(0), m_simHalt(0), m_simImplode(0), m_holdTime(),
-   m_first(1), m_live(0), m_frameCounter(0), m_localBombCounter(0)
+   m_first(1), m_live(0), m_explosionCount(0), m_frameCounter(0), m_localBombCounter(0)
 {
 	m_settings.profile = 0;
 }

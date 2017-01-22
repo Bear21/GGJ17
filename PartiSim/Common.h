@@ -12,6 +12,8 @@
 #pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
+
+#define MAX_EXPLOSIONS 6
 #pragma pack(push, 1) // ensure no padding
 __declspec(align(4)) struct SimControl
 {
@@ -31,9 +33,17 @@ struct SimInput
 
 struct ExplosionDelayedData
 {
+   ExplosionDelayedData() : 
+      timePDeadline(FLT_MAX)
+   {
+   }
    ExplosionDelayedData(float x, float y, float time) :
       detPoint(x, y), timePDeadline(time)
    {
+   }
+   void Reset()
+   {
+      timePDeadline = FLT_MAX;
    }
    DirectX::XMFLOAT2 detPoint;
 	float timePDeadline;

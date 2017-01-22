@@ -115,17 +115,17 @@ void DxApp::Render()
 		}
       if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
       {
-         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, float(input.controlInput[i].inputHigh) / float(m_settings.timeMode)));/* input.timeP * (m_frameCounter + 2850)*/
+         m_explosionDataQueue[m_explosionCount++] = ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, float(input.controlInput[i].inputHigh) / float(m_settings.timeMode));
       }
 	}
 
-	while ((m_explosionDataQueue.size() > 0) && m_explosionDataQueue.front().timePDeadline < (input.timeP * m_frameCounter))
-	{
-
-      ExplosionDelayedData& foo = m_explosionDataQueue.front();
+   for (int i = 0; i < MAX_EXPLOSIONS; i++)
+   {
+      ExplosionDelayedData& foo = m_explosionDataQueue[i];
+      if (foo.timePDeadline >= (input.timeP * m_frameCounter))
+         continue;
 
       m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
-
 
       m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
       m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
@@ -136,7 +136,7 @@ void DxApp::Render()
       m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
       m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
     
-		m_explosionDataQueue.pop();
+      foo.Reset(); // Reset the timer;
 	}
 	
 	if(m_settings.renderMode==0)

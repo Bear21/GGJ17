@@ -17,7 +17,7 @@
 #include <d3d11.h>
 #include <DirectXMath.h>
 #include "timecounter.h"
-#include <queue>
+#include <vector>
 
 
 using namespace Microsoft::WRL;
@@ -177,7 +177,8 @@ private:
    int                  m_first;
    int                  m_live; // 1 when in game
 
-   std::queue<ExplosionDelayedData>  m_explosionDataQueue;
+   ExplosionDelayedData m_explosionDataQueue[MAX_EXPLOSIONS];
+   int                  m_explosionCount;
    __int64              m_frameCounter;
    int                  m_localBombCounter;
 
