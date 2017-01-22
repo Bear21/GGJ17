@@ -385,6 +385,10 @@ void DxApp::SimZeroVelocity()
 {
 	m_simHalt=1;
 }
+void DxApp::SimStart()
+{
+	m_simStart = 1;
+}
 
 void DxApp::SimImplode()
 {

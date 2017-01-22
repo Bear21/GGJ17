@@ -12,6 +12,15 @@
 #pragma once
 #include <d3d11.h>
 #include <DirectXMath.h>
+enum InputMessages
+{
+	InputMessages_pull,
+	InputMessages_push,
+	InputMessages_middlemouse,
+	InputMessages_reset,
+	InputMessages_halt,
+	InputMessages_explode,
+};
 #pragma pack(push, 1) // ensure no padding
 __declspec(align(4)) struct SimControl
 {
