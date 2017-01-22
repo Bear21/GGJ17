@@ -77,6 +77,12 @@ void DxApp::Render()
 	{
 		if((input.controlInput[i].inputLow & 1<<3) == 1<<3) // Reset
 		{
+         m_dx11Res.m_pImmediateContext->CopyResource(m_dx11Res.m_pTextureDataExport, m_dx11Res.m_pTextureDataBuffer[m_flip]);
+
+         m_dx11Res.m_pImmediateContext->
+
+         m_pTextureDataBuffer
+
 			for (int i = 0; i < MAX_EXPLOSIONS; i++)
 			{
 				m_explosionDataQueue[i].Reset();
@@ -133,7 +139,7 @@ void DxApp::Render()
    for (int i = 0; i < MAX_EXPLOSIONS; i++)
    {
       ExplosionDelayedData& foo = m_explosionDataQueue[i];
-      if (foo.timePDeadline >= (input.timeP * m_frameCounter))
+      if ((foo.timePDeadline <= 0.f) && (foo.timePDeadline >= (input.timeP * m_frameCounter)))
          continue;
 
       m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
@@ -178,7 +184,7 @@ void DxApp::Render()
    for (int i = 0; i < MAX_EXPLOSIONS; i++)
    {
       ExplosionDelayedData& foo = m_explosionDataQueue[i];
-      placePoints[i] = XMFLOAT4(5000, 5000, 100, 100);
+      placePoints[i] = XMFLOAT4(5000, 5000, 100, 100); // Magical values
       if (foo.timePDeadline <= 0)
          continue;
       placePoints[i] = XMFLOAT4(foo.detPoint.x, foo.detPoint.y, 100, 100);
