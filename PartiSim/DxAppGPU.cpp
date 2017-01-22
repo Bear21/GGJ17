@@ -77,6 +77,11 @@ void DxApp::Render()
 	{
 		if((input.controlInput[i].inputLow & 1<<3) == 1<<3) // Reset
 		{
+			for (int i = 0; i < MAX_EXPLOSIONS; i++)
+			{
+				m_explosionDataQueue[i].Reset();
+			}
+			
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
 			m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pResetShader, NULL, 0);
@@ -85,7 +90,11 @@ void DxApp::Render()
 			srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
-			
+			m_live = 0;
+			m_explosionCount=0;
+			m_frameCounter=0;
+			m_localBombCounter=0;
+
 			break;//no point in running any more
 		}
 		if((input.controlInput[i].inputLow & 1<<4) == 1<<4) // Halt (sets velocity to 0)

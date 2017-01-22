@@ -180,7 +180,7 @@ private:
    ExplosionDelayedData m_explosionDataQueue[MAX_EXPLOSIONS];
    int                  m_explosionCount;
    __int64              m_frameCounter;
-   int                  m_localBombCounter;
+   int                  m_localBombCounter; 
 
 
 
