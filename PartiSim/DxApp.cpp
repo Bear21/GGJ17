@@ -702,6 +702,7 @@ bool DxApp::GetInput(SimInput &input)
 		input.controlInput[input.numControl].inputLow += m_simHalt<<4;
       if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
          input.controlInput[input.numControl].inputLow += m_mouse2 << 5;//m_simImplode << 5;
+         input.controlInput[input.numControl].inputHigh = m_localBombCounter * 200.f;
       }
 		input.controlInput[input.numControl].mousePosX = m_mousePositionX/m_scale;
 		input.controlInput[input.numControl].mousePosY = m_mousePositionY/m_scale;

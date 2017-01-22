@@ -115,7 +115,7 @@ void DxApp::Render()
 		}
       if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
       {
-         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, m_localBombCounter * 200.f / float(m_settings.timeMode)));/* input.timeP * (m_frameCounter + 2850)*/
+         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, float(input.controlInput[i].inputHigh) / float(m_settings.timeMode)));/* input.timeP * (m_frameCounter + 2850)*/
       }
 	}
 
