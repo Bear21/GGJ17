@@ -26,7 +26,7 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
 	float2 relvec = detPoint - loc;
 	float dist = sqrt(relvec.x*relvec.x + relvec.y*relvec.y);//get distance for normalisation
    float rangeSetting = 50; //explodeRangeSetting;
-	float forceSetting = 10;
+	float forceSetting = 20;
    float rangeFalloffSetting = 150;
 
 	if (dist > rangeFalloffSetting)

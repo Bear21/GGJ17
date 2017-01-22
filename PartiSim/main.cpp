@@ -37,7 +37,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	{
 		readFile = new wchar_t[64];
 		ExtractArgument(param+3, readFile);
-		startvalue=18;
+		startvalue=3;
 	}
 
 	if(param=wcsstr(lpCmdLine, L"+w "))

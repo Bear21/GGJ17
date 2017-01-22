@@ -177,7 +177,8 @@ private:
    int                  m_first;
 
    std::queue<ExplosionDelayedData>  m_explosionDataQueue;
-   __int64                          m_frameCounter;
+   __int64              m_frameCounter;
+   int                  m_localBombCounter;
 
 
 
