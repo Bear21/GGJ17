@@ -24,9 +24,11 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
 	float4 output;
 
 	float2 relvec = detPoint - loc;
-	float dist = sqrt(relvec.x*relvec.x + relvec.y*relvec.y);//get distance for normalisation
+	float dist = length(relvec);//get distance for normalisation
+
+   relvec = normalize(relvec);
    float rangeSetting = 50; //explodeRangeSetting;
-	float forceSetting = 10;
+	float forceSetting = 300;
    float rangeFalloffSetting = 150;
 
 	if (dist > rangeFalloffSetting)
@@ -35,9 +37,16 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
 	}
 
    float multiplier = clamp((rangeFalloffSetting - dist) / (rangeFalloffSetting - rangeSetting), 0, 1);
+   
    float force = forceSetting * (multiplier * multiplier);
 
 	vel = vel + -relvec * force;
+
+   /*float multiplier = (rangeFalloffSetting - dist) / rangeFalloffSetting;
+
+   float force = forceSetting * (multiplier * multiplier);
+
+   vel = vel + -normalize(relvec) * force;*/
 
 	return float4(float2(vel), float2(loc));
 }

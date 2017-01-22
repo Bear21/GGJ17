@@ -175,6 +175,7 @@ private:
    TimePast             m_holdTime;
    int                  m_simReset, m_simHalt, m_simImplode;
    int                  m_first;
+   int                  m_live; // 1 when in game
 
    std::queue<ExplosionDelayedData>  m_explosionDataQueue;
    __int64                          m_frameCounter;

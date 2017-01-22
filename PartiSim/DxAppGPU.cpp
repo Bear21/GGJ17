@@ -51,7 +51,7 @@ void DxApp::Render()
 		m_first = 0;
 		m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
 		m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
-		m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pResetShader, NULL, 0);
+		m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pStartupResetShader, NULL, 0);
 		m_dx11Res.m_pImmediateContext->Draw(4, 0);
 		m_flip = !m_flip;
 		srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
@@ -59,6 +59,7 @@ void DxApp::Render()
 		m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
 	}
 
+   if (m_live) 
    { // Sandpit
       m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
       m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
