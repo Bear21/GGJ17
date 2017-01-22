@@ -705,7 +705,8 @@ bool DxApp::GetInput(SimInput &input)
 		input.controlInput[input.numControl].inputLow += m_simReset<< InputMessages_reset;
 		input.controlInput[input.numControl].inputLow += m_simHalt<< InputMessages_halt;
 		input.controlInput[input.numControl].inputLow += m_simStart << InputMessages_start;
-      if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
+      if (m_localBombCounter < BOMB_PLACEMENT_LIMIT && m_mouse2) {
+         m_localBombCounter++;
          input.controlInput[input.numControl].inputLow += m_mouse2 << InputMessages_explode;//m_simImplode << 5;
          input.controlInput[input.numControl].inputHigh = m_localBombCounter * 200.f;
       }
