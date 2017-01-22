@@ -79,9 +79,18 @@ void DxApp::Render()
 		{
          m_dx11Res.m_pImmediateContext->CopyResource(m_dx11Res.m_pTextureDataExport, m_dx11Res.m_pTextureDataBuffer[m_flip]);
 
-         m_dx11Res.m_pImmediateContext->
+         {
+            D3D11_MAPPED_SUBRESOURCE mapped = {};
 
-         m_pTextureDataBuffer
+            mapped.RowPitch = PARTNUM * 16; // 16Bytes per partical
+            m_dx11Res.m_pImmediateContext->Map(m_dx11Res.m_pTextureDataExport, NULL, D3D11_MAP_READ, NULL, &mapped);
+
+            for (int i = 0; i < (PARTNUM * PARTNUM); i++)
+            {
+            }
+
+            m_dx11Res.m_pImmediateContext->Unmap(m_dx11Res.m_pTextureDataExport, NULL);
+         }
 
 			for (int i = 0; i < MAX_EXPLOSIONS; i++)
 			{
@@ -139,8 +148,9 @@ void DxApp::Render()
    for (int i = 0; i < MAX_EXPLOSIONS; i++)
    {
       ExplosionDelayedData& foo = m_explosionDataQueue[i];
-      if ((foo.timePDeadline <= 0.f) && (foo.timePDeadline >= (input.timeP * m_frameCounter)))
+      if (foo.timePDeadline >= (input.timeP * m_frameCounter))
          continue;
+         
 
       m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
 

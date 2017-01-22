@@ -129,7 +129,7 @@ private:
       ID3D11UnorderedAccessView  *m_pTextureBufferUAView;
       ID3D11ShaderResourceView   *m_pTextureView            = nullptr;
       ID3D11Texture2D            *m_pTextureDataBuffer[2];
-      //ID3D11Texture2D          *m_pTextureDataExport; // can be used for debugging
+      ID3D11Texture2D            *m_pTextureDataExport; // can be used for debugging
       ID3D11ShaderResourceView   *m_pTextureDataView[2];
       ID3D11RenderTargetView     *m_pDataRenderTargetView[2];
       ID3D11UnorderedAccessView  *m_pTextureDataUAView[2];

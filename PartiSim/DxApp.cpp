@@ -578,6 +578,11 @@ int DxApp::SetupDx11Resources()
 	hr = m_dx11Res.m_pd3dDevice->CreateTexture2D( &descT, NULL, &m_dx11Res.m_pTextureDataBuffer[0] );
 	hr = m_dx11Res.m_pd3dDevice->CreateTexture2D( &descT, NULL, &m_dx11Res.m_pTextureDataBuffer[1] );
 
+   descT.Usage = D3D11_USAGE_STAGING;
+   descT.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+   descT.BindFlags = NULL;
+   hr = m_dx11Res.m_pd3dDevice->CreateTexture2D(&descT, NULL, &m_dx11Res.m_pTextureDataExport);
+
 	m_dx11Res.m_pd3dDevice->CreateShaderResourceView(m_dx11Res.m_pTextureDataBuffer[0], NULL, &m_dx11Res.m_pTextureDataView[0]);
 	m_dx11Res.m_pd3dDevice->CreateShaderResourceView(m_dx11Res.m_pTextureDataBuffer[1], NULL, &m_dx11Res.m_pTextureDataView[1]);
 
