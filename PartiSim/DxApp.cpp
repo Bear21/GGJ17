@@ -17,7 +17,7 @@ DxApp::DxApp(void)
    m_performanceS(), m_performanceD(), m_performanceR(),
    m_counterExpectedTime(0.f), m_flip(0),
    m_simReset(0), m_simHalt(0), m_simImplode(0), m_holdTime(),
-   m_first(1), m_live(0), m_frameCounter(0)
+   m_first(1), m_live(0), m_frameCounter(0), m_localBombCounter(0)
 {
 	m_settings.profile = 0;
 }
@@ -700,9 +700,9 @@ bool DxApp::GetInput(SimInput &input)
 		//input.controlInput[input.numControl].inputLow += m_mouse2<<1;
 		input.controlInput[input.numControl].inputLow += m_simReset<<3;
 		input.controlInput[input.numControl].inputLow += m_simHalt<<4;
-      //if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
+      if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
          input.controlInput[input.numControl].inputLow += m_mouse2 << 5;//m_simImplode << 5;
-      //}
+      }
 		input.controlInput[input.numControl].mousePosX = m_mousePositionX/m_scale;
 		input.controlInput[input.numControl].mousePosY = m_mousePositionY/m_scale;
 

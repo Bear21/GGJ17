@@ -90,6 +90,20 @@ void DxApp::Render()
 		}
 		if((input.controlInput[i].inputLow & 1<<4) == 1<<4) // Halt (sets velocity to 0)
 		{
+         if (m_live == 0)
+         {
+            m_live = 1;
+            m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
+            m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
+            m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pResetShader, NULL, 0);
+            m_dx11Res.m_pImmediateContext->Draw(4, 0);
+            m_flip = !m_flip;
+            srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
+            m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
+            m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+            break;//no point in running any more
+         }
+
 			m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
 			m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
 			m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pHaltShader, NULL, 0);
@@ -101,14 +115,14 @@ void DxApp::Render()
 		}
       if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
       {
-         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, m_localBombCounter * 250.f / float(m_settings.timeMode) ));/* input.timeP * (m_frameCounter + 2850)*/
+         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, m_localBombCounter * 200.f / float(m_settings.timeMode)));/* input.timeP * (m_frameCounter + 2850)*/
       }
 	}
 
 	while ((m_explosionDataQueue.size() > 0) && m_explosionDataQueue.front().timePDeadline < (input.timeP * m_frameCounter))
 	{
 
-      ExplosionDelayedData foo = ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0);
+      ExplosionDelayedData& foo = m_explosionDataQueue.front();
 
       m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
 

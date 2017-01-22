@@ -28,7 +28,7 @@ float4 explode(PS_INPUT_TEX input) : SV_Target
 
    relvec = normalize(relvec);
    float rangeSetting = 50; //explodeRangeSetting;
-	float forceSetting = 300;
+	float forceSetting = 600;
    float rangeFalloffSetting = 150;
 
 	if (dist > rangeFalloffSetting)
