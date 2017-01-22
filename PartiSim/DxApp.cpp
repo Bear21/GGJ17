@@ -639,18 +639,22 @@ void DxApp::OnKeyUp(SHORT vkey)
 {
 	if((m_settings.inputType & 1) == 1)
 	{
-		if(vkey=='R')
+		if (vkey == 'R')
 		{
 			SimReset();
 		}
-		if(vkey==VK_SPACE)
+		if (vkey == 'H')
 		{
 			SimZeroVelocity();
 		}
-      if (vkey == 'Z')
-      {
-         SimImplode();
-      }
+		if (vkey == VK_SPACE)
+		{
+			SimStart();			//	Reserved for start game			SimZeroVelocity(); 
+		}
+		if (vkey == 'Z')
+		{
+			SimImplode();
+		}
 	}
 }
 
@@ -696,12 +700,12 @@ bool DxApp::GetInput(SimInput &input)
 
 	if((m_settings.inputType & 1) == 1 && ((m_mouse1 || m_mouse2) || (m_simReset || m_simHalt)) || m_simImplode)
 	{
-		input.controlInput[input.numControl].inputLow = m_mouse1;
+		input.controlInput[input.numControl].inputLow = m_mouse1<< InputMessages_pull;
 		//input.controlInput[input.numControl].inputLow += m_mouse2<<1;
-		input.controlInput[input.numControl].inputLow += m_simReset<<3;
-		input.controlInput[input.numControl].inputLow += m_simHalt<<4;
+		input.controlInput[input.numControl].inputLow += m_simReset<< InputMessages_reset;
+		input.controlInput[input.numControl].inputLow += m_simHalt<< InputMessages_halt;
       if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
-         input.controlInput[input.numControl].inputLow += m_mouse2 << 5;//m_simImplode << 5;
+         input.controlInput[input.numControl].inputLow += m_mouse2 << InputMessages_explode;//m_simImplode << 5;
          input.controlInput[input.numControl].inputHigh = m_localBombCounter * 200.f;
       }
 		input.controlInput[input.numControl].mousePosX = m_mousePositionX/m_scale;

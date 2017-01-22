@@ -173,7 +173,7 @@ private:
    float                m_scale;
    int                  m_noRedraw;
    TimePast             m_holdTime;
-   int                  m_simReset, m_simHalt, m_simImplode;
+   int                  m_simReset, m_simHalt, m_simImplode, m_simStart;
    int                  m_first;
    int                  m_live; // 1 when in game
 
@@ -215,7 +215,8 @@ private:
 
 	void SimReset();
 	void SimZeroVelocity();
-   void SimImplode();
+    void SimImplode();
+	void SimStart();
 
 	void DisplayBenchmarkComplete();
 
