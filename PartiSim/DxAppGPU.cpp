@@ -85,10 +85,17 @@ void DxApp::Render()
             mapped.RowPitch = PARTNUM * 16; // 16Bytes per partical
             m_dx11Res.m_pImmediateContext->Map(m_dx11Res.m_pTextureDataExport, NULL, D3D11_MAP_READ, NULL, &mapped);
 
+            XMFLOAT4* particles = (XMFLOAT4*)mapped.pData;
+            int scoreCount = 0;
             for (int i = 0; i < (PARTNUM * PARTNUM); i++)
             {
+               if ((particles + i)->z <= 100.f)
+                  scoreCount++;
             }
 
+            wchar_t scoreMessage[128];
+            wsprintf(scoreMessage, L"Score: %d", scoreCount);
+            MessageBox(m_hWnd, scoreMessage, L"Results", NULL);
             m_dx11Res.m_pImmediateContext->Unmap(m_dx11Res.m_pTextureDataExport, NULL);
          }
 
