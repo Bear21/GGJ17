@@ -10,6 +10,8 @@
 // <date>2014-01-15</date>
 #include "DxApp.h"
 
+#define BOMB_PLACEMENT_LIMIT 3 // Perperson
+
 DxApp::DxApp(void)
    : m_close(false), m_mouse1(false), m_mouse2(false), m_timer(),
    m_performanceS(), m_performanceD(), m_performanceR(),
@@ -695,10 +697,12 @@ bool DxApp::GetInput(SimInput &input)
 	if((m_settings.inputType & 1) == 1 && ((m_mouse1 || m_mouse2) || (m_simReset || m_simHalt)) || m_simImplode)
 	{
 		input.controlInput[input.numControl].inputLow = m_mouse1;
-		input.controlInput[input.numControl].inputLow += m_mouse2<<1;
+		//input.controlInput[input.numControl].inputLow += m_mouse2<<1;
 		input.controlInput[input.numControl].inputLow += m_simReset<<3;
 		input.controlInput[input.numControl].inputLow += m_simHalt<<4;
-      input.controlInput[input.numControl].inputLow += m_mouse2 << 5;//m_simImplode << 5;
+      //if (m_localBombCounter++ < BOMB_PLACEMENT_LIMIT) {
+         input.controlInput[input.numControl].inputLow += m_mouse2 << 5;//m_simImplode << 5;
+      //}
 		input.controlInput[input.numControl].mousePosX = m_mousePositionX/m_scale;
 		input.controlInput[input.numControl].mousePosY = m_mousePositionY/m_scale;
 

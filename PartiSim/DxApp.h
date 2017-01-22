@@ -178,7 +178,8 @@ private:
    int                  m_live; // 1 when in game
 
    std::queue<ExplosionDelayedData>  m_explosionDataQueue;
-   __int64                          m_frameCounter;
+   __int64              m_frameCounter;
+   int                  m_localBombCounter;
 
 
 

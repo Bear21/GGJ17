@@ -29,7 +29,6 @@ void DxApp::Render()
 #endif
 	SimInput input;
 	input.numControl = 0;
-    m_frameCounter++;
 
 	if(!GetInput(input))
 		return;
@@ -69,6 +68,9 @@ void DxApp::Render()
       srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
       m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
       m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+
+      // Frame Counter used for timing of bombs
+      m_frameCounter++;
    }
 
 	for(int i=0; i<input.numControl; i++) // modifiers
@@ -99,36 +101,26 @@ void DxApp::Render()
 		}
       if ((input.controlInput[i].inputLow & 1 << 5) == 1 << 5) // Implode - Beginning of the explosion.
       {
-         ExplosionDelayedData foo = ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0);
-         
-         m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
-
-
-         m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
-         m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
-         m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pExplodeShader, NULL, 0);
-         m_dx11Res.m_pImmediateContext->Draw(4, 0);
-         m_flip = !m_flip;
-         srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
-         m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
-         m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
-         //m_explosionDataList.push_front(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0/* input.timeP * (m_frameCounter + 2850)*/));
-         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0));/* input.timeP * (m_frameCounter + 2850)*/
-
+         m_explosionDataQueue.push(ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, m_localBombCounter * 250.f / float(m_settings.timeMode) ));/* input.timeP * (m_frameCounter + 2850)*/
       }
 	}
 
 	while ((m_explosionDataQueue.size() > 0) && m_explosionDataQueue.front().timePDeadline < (input.timeP * m_frameCounter))
 	{
 
-		m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
-		m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
-		m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pExplodeShader, NULL, 0);
-		m_dx11Res.m_pImmediateContext->Draw(4, 0);
-		m_flip = !m_flip;
-		srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
-		m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
-		m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
+      ExplosionDelayedData foo = ExplosionDelayedData(input.controlInput[i].mousePosX, input.controlInput[i].mousePosY, 0);
+
+      m_dx11Res.m_pImmediateContext->UpdateSubresource(m_dx11Res.m_pExplosiveCB, 0, NULL, &foo, 0, 0);
+
+
+      m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pDataRenderTargetView[!m_flip], dsNullview);
+      m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, srvSim);
+      m_dx11Res.m_pImmediateContext->PSSetShader(m_dx11Res.m_pExplodeShader, NULL, 0);
+      m_dx11Res.m_pImmediateContext->Draw(4, 0);
+      m_flip = !m_flip;
+      srvSim[0] = m_dx11Res.m_pTextureDataView[m_flip];
+      m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 1, &srvNull);
+      m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &rtvNull, dsNullview);
     
 		m_explosionDataQueue.pop();
 	}
