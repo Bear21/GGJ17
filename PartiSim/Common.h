@@ -57,5 +57,6 @@ struct ExplosionDelayedData
    }
    DirectX::XMFLOAT2 detPoint;
 	float timePDeadline;
+   char padding[128];
 };
 #pragma pack(pop)

@@ -165,6 +165,13 @@ void DxApp::Render()
 	}
 
 	
+   for (int i = 0; i < MAX_EXPLOSIONS; i++)
+   {
+      ExplosionDelayedData& foo = m_explosionDataQueue[i];
+      if (foo.timePDeadline >= 0)
+         continue;
+
+   }
 	m_dx11Res.m_pImmediateContext->OMSetRenderTargets(1, &m_dx11Res.m_pRenderFinalTargetView, dsNullview);
 	ID3D11ShaderResourceView *resources[] = {m_dx11Res.m_pTextureView, NULL, NULL};
 	m_dx11Res.m_pImmediateContext->PSSetShaderResources(0, 3, resources);

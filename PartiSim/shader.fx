@@ -34,6 +34,11 @@ cbuffer PSCB : register( b0 )
 	int height;
 }
 
+cbuffer CBPLACING : register(b4)
+{
+   float2 placePoint[6];
+}
+
 /*	DirectX::XMVectorSet(-1, 1, 0, 0),
 	DirectX::XMVectorSet(1, 1, 1, 0),
 	DirectX::XMVectorSet(-1, -1, 0, 1),
@@ -57,6 +62,12 @@ float4 PS(PS_INPUT_TEX input) : SV_Target // Sets Output Colour
 {
 	int px = trunc(input.Pos.x);
 	int py = trunc(input.Pos.y);
+
+   for (int i = 0; i < 6; i++)
+   {
+      float dist = distance(input.Pos, placePoint[i]);
+      if (dist < 5) return float4(1, 0, 0, 1);
+   }
 
 	uint q1 = txBuffer.Load((px+(py*dimensions.x))*4);
 	if(q1==0)
